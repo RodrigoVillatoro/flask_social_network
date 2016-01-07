@@ -1,0 +1,11 @@
+.idea
+
+__pycache__
+
+*.db
+
+*.pyc
+
+*/config_secret.py
+
+*.log
