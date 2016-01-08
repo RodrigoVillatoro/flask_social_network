@@ -6,7 +6,7 @@ __pycache__
 
 *.pyc
 
-*/config_secret.py
+config_secret.py
 
 *.log
 
