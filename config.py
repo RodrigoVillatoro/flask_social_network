@@ -6,9 +6,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config:
+    DEBUG = False
+    TESTING = False
     SECRET_KEY = cs.SECRET_KEY
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-    APP_MAIL_SUBJECT_PREFIX = '[Flasky] '
+    APP_MAIL_SUBJECT_PREFIX = '[Flasky]'
     APP_MAIL_SENDER = cs.APP_MAIL_SENDER
     APP_ADMIN = cs.APP_ADMIN
 
