@@ -3,8 +3,9 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from . import auth
 from .. import db
-from .forms import (ChangePasswordForm, LoginForm, PasswordResetForm,
-                    PasswordResetRequestForm, RegistrationForm)
+from .forms import (ChangeEmailForm, ChangePasswordForm, LoginForm,
+                    PasswordResetForm, PasswordResetRequestForm,
+                    RegistrationForm)
 from ..email import send_email
 from ..models import User
 
@@ -148,3 +149,35 @@ def password_reset(token):
         else:
             return redirect(url_for('main.index'))
     return render_template('auth/reset_password.html', form=form)
+
+
+@auth.route('/change-email', methods=['GET', 'POST'])
+@login_required
+def change_email_request():
+    form = ChangeEmailForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            new_email = form.email.data
+            token = current_user.generate_email_change_token(new_email)
+            send_email(
+                to=new_email,
+                subject='Confirm your email address',
+                template='auth/email/change_email',
+                user=current_user,
+                token=token,
+            )
+            flash('An email with the instructions to confirm your new email'
+                  ' has been sent.')
+        else:
+            flash('Invalid password')
+    return render_template('auth/change_email.html', form=form)
+
+
+@auth.route('/change-email/<token>')
+@login_required
+def change_email(token):
+    if current_user.change_email(token):
+        flash('Your email address has been updated.')
+    else:
+        flash('Invalid token or token has expired')
+    return redirect(url_for('main.index'))
