@@ -55,6 +55,10 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def __init__(self, password, email=None, username=None):
+        self.email = email
+        self.username = username
+        self.password = password
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
