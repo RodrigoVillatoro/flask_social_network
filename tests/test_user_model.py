@@ -1,8 +1,22 @@
+import time
 import unittest
+
+from app import create_app, db
 from app.models import User
 
 
 class UserModelTestCase(unittest.TestCase):
+    def setUp(self):
+        self.app = create_app('testing')
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
+
     def test_password_setter(self):
         u = User(password='cat')
         self.assertTrue(u.password_hash is not None)
@@ -21,3 +35,27 @@ class UserModelTestCase(unittest.TestCase):
         u1 = User(password='cat')
         u2 = User(password='cat')
         self.assertTrue(u1.password_hash != u2.password_hash)
+
+    def test_valid_confirmation_token(self):
+        u = User(password='cat')
+        db.session.add(u)
+        db.session.commit()
+        token = u.generate_confirmation_token()
+        self.assertTrue(u.confirm(token))
+
+    def test_invalid_confirmation_token(self):
+        u1 = User(password='cat')
+        u2 = User(password='dog')
+        db.session.add_all([u1, u2])
+        db.session.commit()
+        token1 = u1.generate_confirmation_token()
+        token2 = u2.generate_confirmation_token()
+        self.assertFalse(u2.confirm(token1))
+
+    def test_expired_confirmation_token(self):
+        u = User(password='cat')
+        db.session.add(u)
+        db.session.commit()
+        token = u.generate_confirmation_token(expiration=1)
+        time.sleep(2)
+        self.assertFalse(u.confirm(token))
