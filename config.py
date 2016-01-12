@@ -13,6 +13,7 @@ class Config:
     APP_MAIL_SUBJECT_PREFIX = '[Flasky]'
     APP_MAIL_SENDER = cs.APP_MAIL_SENDER
     APP_ADMIN = cs.APP_ADMIN
+    BOOTSTRAP_SERVE_LOCAL = True
 
     @staticmethod
     def init_app(app):

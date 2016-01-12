@@ -59,3 +59,8 @@ class EditProfileAdminForm(Form):
         if field.data != self.user.username and \
                 User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already exists.')
+
+
+class PostForm(Form):
+    body = TextAreaField('How are you feeling?', validators=[DataRequired()])
+    submit = SubmitField('Submit')
