@@ -12,3 +12,5 @@ config_secret.py
 *.log
 
 /venv
+
+data-dev.sqlite-journal
