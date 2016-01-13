@@ -20,6 +20,20 @@
                     {{ post.body }}
                 {% endif %}
             </div>
+            <div class="post-footer">
+                {% if current_user == post.author %}
+                    <a href="{{ url_for('main.edit', id=post.id) }}">
+                        <span class="label label-primary">Edit</span>
+                    </a>
+                {% elif current_user.is_administrator() %}
+                    <a href="{{ url_for('main.edit', id=post.id) }}">
+                        <span class="label label-danger">Edit</span>
+                    </a>
+                {% endif %}
+                <a href="{{ url_for('main.post', id=post.id) }}">
+                    <span class="label label-default">Permalink</span>
+                </a>
+            </div>
         </div>
     </li>
     {% endfor %}
