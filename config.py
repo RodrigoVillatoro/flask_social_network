@@ -13,6 +13,7 @@ class Config:
     APP_MAIL_SUBJECT_PREFIX = '[Flasky]'
     APP_MAIL_SENDER = cs.APP_MAIL_SENDER
     APP_ADMIN = cs.APP_ADMIN
+    APP_POSTS_PER_PAGE = 20
     BOOTSTRAP_SERVE_LOCAL = True
 
     @staticmethod
