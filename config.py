@@ -16,6 +16,7 @@ class Config:
     APP_POSTS_PER_PAGE = 20
     APP_FOLLOWERS_PER_PAGE = 20
     APP_FOLLOWING_PER_PAGE = 20
+    APP_COMMENTS_PER_PAGE = 20
     BOOTSTRAP_SERVE_LOCAL = True
 
     @staticmethod
