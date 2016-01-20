@@ -1,12 +1,11 @@
 import json
-import re
 import unittest
 
 from base64 import b64encode
 from flask import url_for
 
 from app import db, create_app
-from app.models import Comment, Post, Role, User
+from app.models import Role, User
 
 
 class APITestCase(unittest.TestCase):
@@ -49,7 +48,7 @@ class APITestCase(unittest.TestCase):
         # Add user
         r = Role.query.filter_by(name='User').first()
         self.assertIsNotNone(r)
-        u = User(email='name@example.com', password='cat', confirmed=True,
+        u = User(email='name_two@example.com', password='cat', confirmed=True,
                  role=r)
         db.session.add(u)
         db.session.commit()
@@ -57,7 +56,7 @@ class APITestCase(unittest.TestCase):
         # Authenticate with wrong password
         response = self.client.get(
                 url_for('api.get_posts'),
-                headers=self.get_api_headers('name@example.com', 'dog'))
+                headers=self.get_api_headers('name_two@example.com', 'dog'))
         self.assertTrue(response.status_code == 401)
 
     def test_token_auth(self):
